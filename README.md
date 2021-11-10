@@ -1,22 +1,7 @@
-# Template for deploying k3s backed by Flux
-
-Highly opinionated template for deploying a single [k3s](https://k3s.io) cluster with [Ansible](https://www.ansible.com) and [Terraform](https://www.terraform.io) backed by [Flux](https://toolkit.fluxcd.io/) and [SOPS](https://toolkit.fluxcd.io/guides/mozilla-sops/).
-
-The purpose here is to showcase how you can deploy an entire Kubernetes cluster and show it off to the world using the [GitOps](https://www.weave.works/blog/what-is-gitops-really) tool [Flux](https://toolkit.fluxcd.io/). When completed, your Git repository will be driving the state of your Kubernetes cluster. In addition with the help of the [Ansible](https://github.com/ansible-collections/community.sops), [Terraform](https://github.com/carlpett/terraform-provider-sops) and [Flux](https://toolkit.fluxcd.io/guides/mozilla-sops/) SOPS integrations you'll be able to commit GPG encrypted secrets to your public repo.
-
-## Overview
-
-- [Introduction](https://github.com/k8s-at-home/template-cluster-k3s#wave-introduction)
-- [Prerequisites](https://github.com/k8s-at-home/template-cluster-k3s#memo-prerequisites)
-- [Repository structure](https://github.com/k8s-at-home/template-cluster-k3s#open_file_folder-repository-structure)
-- [Lets go!](https://github.com/k8s-at-home/template-cluster-k3s#rocket-lets-go)
-- [Post installation](https://github.com/k8s-at-home/template-cluster-k3s#mega-post-installation)
-- [Thanks](https://github.com/k8s-at-home/template-cluster-k3s#handshake-thanks)
 
 ## :wave:&nbsp; Introduction
 
-The following components will be installed in your [k3s](https://k3s.io/) cluster by default. They are only included to get a minimum viable cluster up and running. You are free to add / remove components to your liking but anything outside the scope of the below components are not supported by this template.
-
+The following components will be installed in your [k3s](https://k3s.io/) cluster by default.
 Feel free to read up on any of these technologies before you get started to be more familiar with them.
 
 - [cert-manager](https://cert-manager.io/) - SSL certificates - with Cloudflare DNS challenge
@@ -29,6 +14,8 @@ Feel free to read up on any of these technologies before you get started to be m
 - [reloader](https://github.com/stakater/Reloader) - restart pods when Kubernetes `configmap` or `secret` changes
 - [system-upgrade-controller](https://github.com/rancher/system-upgrade-controller) - upgrade k3s
 - [traefik](https://traefik.io) - ingress controller
+- [velero](https://velero.io/) - backup system
+- [rook-ceph](https://rook.github.io/) - setup volumes and claims
 
 For provisioning the following tools will be used:
 
@@ -63,26 +50,8 @@ For provisioning the following tools will be used:
 | [pinentry](https://gnupg.org/related_software/pinentry/index.html) | Allows GnuPG to read passphrases and PIN numbers                    |
 | [sops](https://github.com/mozilla/sops)                            | Encrypts k8s secrets with GnuPG                                     |
 | [terraform](https://www.terraform.io)                              | Prepare a Cloudflare domain to be used with the cluster             |
-
-#### Optional
-
-| Tool                                                               | Purpose                                                             |
-|--------------------------------------------------------------------|---------------------------------------------------------------------|
 | [helm](https://helm.sh/)                                           | Manage Kubernetes applications                                      |
 | [kustomize](https://kustomize.io/)                                 | Template-free way to customize application configuration            |
-| [pre-commit](https://github.com/pre-commit/pre-commit)             | Runs checks pre `git commit`                                        |
-| [prettier](https://github.com/prettier/prettier)                   | Prettier is an opinionated code formatter.                          |
-
-### :warning:&nbsp; pre-commit
-
-It is advisable to install [pre-commit](https://pre-commit.com/) and the pre-commit hooks that come with this repository.
-[sops-pre-commit](https://github.com/k8s-at-home/sops-pre-commit) will check to make sure you are not by accident committing your secrets un-encrypted.
-
-After pre-commit is installed on your machine run:
-
-```sh
-pre-commit install-hooks
-```
 
 ## :open_file_folder:&nbsp; Repository structure
 
@@ -96,8 +65,11 @@ The Git repository contains the following directories under `cluster` and are or
 ```
 cluster
 ├── apps
-│   ├── default
+│   ├── home
+│   ├── home-automation
+│   ├── monitoring 
 │   ├── networking
+│   ├── velero
 │   └── system-upgrade
 ├── base
 │   └── flux-system
@@ -105,18 +77,11 @@ cluster
 │   ├── cert-manager
 │   ├── metallb-system
 │   ├── namespaces
+│   ├── rook-ceph
 │   └── system-upgrade
 └── crds
     └── cert-manager
 ```
-
-## :rocket:&nbsp; Lets go!
-
-Very first step will be to create a new repository by clicking the **Use this template** button on this page.
-
-Clone the repo to you local workstation and `cd` into it.
-
-:round_pushpin: **All of the below commands** are run on your **local** workstation, **not** on any of your cluster nodes.
 
 ### :closed_lock_with_key:&nbsp; Setting up GnuPG keys
 
@@ -167,8 +132,6 @@ gpg --list-secret-keys "${FLUX_KEY_NAME}"
 # sub   rsa4096 2021-03-11 [E]
 ```
 
-3. You will need the Fingerprints in the configuration section below. For example, in the above steps you will need `772154FFF783DE317KLCA0EC77149AC618D75581` and `AB675CE4CC64251G3S9AE1DAA88ARRTY2C009E2D`
-
 ### :cloud:&nbsp; Global Cloudflare API Key
 
 In order to use Terraform and `cert-manager` with the Cloudflare DNS challenge you will need to create a API key.
@@ -204,6 +167,8 @@ In order to use Terraform and `cert-manager` with the Cloudflare DNS challenge y
 5. Finally, run the Ubuntu Prepare playbook by running `task ansible:playbook:ubuntu-prepare`
 
 6. If everything goes as planned you should see Ansible running the Ubuntu Prepare Playbook against your nodes.
+
+7. If needed use `task ansible:playbook:rook-ceph-nuke` to clean up the rook volumes
 
 ### :sailboat:&nbsp; Installing k3s with Ansible
 
@@ -258,11 +223,8 @@ kubectl --kubeconfig=./provision/kubeconfig create secret generic sops-gpg \
 
 :round_pushpin: Variables defined in `./cluster/base/cluster-secrets.sops.yaml` and `./cluster/base/cluster-settings.sops.yaml` will be usable anywhere in your YAML manifests under `./cluster`
 
-4. **Verify** all the above files are **encrypted** with SOPS
 
-5. If you verified all the secrets are encrypted, you can delete the `tmpl` directory now
-
-6.  Push you changes to git
+4.  Push you changes to git
 
 ```sh
 git add -A
@@ -270,7 +232,7 @@ git commit -m "initial commit"
 git push
 ```
 
-7. Install Flux
+5. Install Flux
 
 :round_pushpin: Due to race conditions with the Flux CRDs you will have to run the below command twice. There should be no errors on this second run.
 
@@ -287,7 +249,7 @@ kubectl --kubeconfig=./provision/kubeconfig apply --kustomize=./cluster/base/flu
 # unable to recognize "./cluster/base/flux-system": no matches for kind "HelmRepository" in version "source.toolkit.fluxcd.io/v1beta1"
 ```
 
-8. Verify Flux components are running in the cluster
+6. Verify Flux components are running in the cluster
 
 ```sh
 kubectl --kubeconfig=./provision/kubeconfig get pods -n flux-system
@@ -298,7 +260,7 @@ kubectl --kubeconfig=./provision/kubeconfig get pods -n flux-system
 # source-controller-7d6875bcb4-zqw9f         1/1     Running   0          1h
 ```
 
-9. nuke rook-ceph cluster and extras
+7. nuke rook-ceph cluster and extra commands:
 
 ```sh
 # kubectl label node k8s-0 node-role.kubernetes.io/worker=worker
@@ -327,22 +289,4 @@ kubectl --kubeconfig=./provision/kubeconfig get pods -n flux-system
 
 If Terraform was ran successfully head over to your browser and you _should_ be able to access `https://hajimari.${BOOTSTRAP_CLOUDFLARE_DOMAIN}`
 
-## :mega:&nbsp; Post installation
 
-### :point_right:&nbsp; Troubleshooting
-
-Our [wiki](https://github.com/k8s-at-home/template-cluster-k3s/wiki) is a good place to start troubleshooting issues. If that doesn't cover your issue, start a new thread in the #support channel on our [Discord](https://digcord.gg/k8s-at-home).
-
-### :robot:&nbsp; Integrations
-
-Our Check out our [wiki](https://github.com/k8s-at-home/template-cluster-k3s/wiki) for more integrations!
-
-## :grey_question:&nbsp; What's next
-
-The world is your cluster, try installing another application or if you have a NAS and want storage back by that check out the helm charts for [democratic-csi](https://github.com/democratic-csi/democratic-csi), [csi-driver-nfs](https://github.com/kubernetes-csi/csi-driver-nfs) or [nfs-subdir-external-provisioner](https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner).
-
-If you plan on exposing your ingress to the world from your home. Checkout [our rough guide](https://docs.k8s-at-home.com/guides/dyndns/) to run a k8s `CronJob` to update DDNS.
-
-## :handshake:&nbsp; Thanks
-
-Big shout out to all the authors and contributors to the projects that we are using in this repository.
