@@ -1,0 +1,70 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: emqx
+  namespace: home-automation
+spec:
+  interval: 10m
+  chart:
+    spec:
+      # renovate: registryUrl=https://repos.emqx.io/charts
+      chart: emqx
+      version: 4.3.9
+      sourceRef:
+        kind: HelmRepository
+        name: emqx-charts
+        namespace: flux-system
+  values:
+    replicaCount: 2
+    recreatePods: true
+    emqxConfig:
+      EMQX_ALLOW_ANONYMOUS: "false"
+      EMQX_ADMIN_PASSWORD: "${SECRET_EMQX_ADMIN_PASSWORD}"
+      EMQX_AUTH__MNESIA__PASSWORD_HASH: plain
+      EMQX_AUTH__USER__1__USERNAME: "${SECRET_EMQX_USER_USERNAME}"
+      EMQX_AUTH__USER__1__PASSWORD: "${SECRET_EMQX_USER_PASSWORD}"
+    service:
+      type: LoadBalancer
+      externalIPs:
+        - 192.168.1.231
+    emqxLoadedPlugins: >
+      {emqx_management, true}.
+      {emqx_recon, true}.
+      {emqx_retainer, true}.
+      {emqx_dashboard, true}.
+      {emqx_telemetry, false}.
+      {emqx_rule_engine, true}.
+      {emqx_bridge_mqtt, false}.
+      {emqx_auth_mnesia, true}.
+    ingress:
+      dashboard:
+        enabled: true
+        annotations:
+          cert-manager.io/cluster-issuer: "letsencrypt-staging"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "nas"
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          external-dns/is-public: "true"
+          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+        hosts:
+          - emqx.${SECRET_DOMAIN}
+        tls:
+          - hosts:
+              - emqx.${SECRET_DOMAIN}
+            secretName: emqx-tls
+    persistence:
+      enabled: true
+      storageClass: ceph-block
+    affinity:
+      podAntiAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                  - key: app.kubernetes.io/name
+                    operator: In
+                    values:
+                      - emqx
+              topologyKey: kubernetes.io/hostname
