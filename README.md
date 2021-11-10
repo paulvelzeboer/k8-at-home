@@ -289,4 +289,6 @@ kubectl --kubeconfig=./provision/kubeconfig get pods -n flux-system
 
 If Terraform was ran successfully head over to your browser and you _should_ be able to access `https://hajimari.${BOOTSTRAP_CLOUDFLARE_DOMAIN}`
 
+#### All thanks to:
 
+https://k8s-at-home.com/
