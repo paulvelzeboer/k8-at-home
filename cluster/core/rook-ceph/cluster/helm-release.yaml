@@ -22,7 +22,6 @@ spec:
       enabled: true
     monitoring:
       enabled: true
-      rulesNamespace: rook-ceph
     cephClusterSpec:
       dataDirHostPath: /var/lib/rook
       dashboard:

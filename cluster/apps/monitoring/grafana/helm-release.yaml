@@ -174,11 +174,11 @@ spec:
       ingressClassName: "traefik"
       annotations:
         traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-          cert-manager.io/cluster-issuer: "letsencrypt-staging"
-          hajimari.io/icon: "dashboard"
-          hajimari.io/enable: "true"
-          external-dns/is-public: "true"
-          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+        cert-manager.io/cluster-issuer: "letsencrypt-staging"
+        hajimari.io/icon: "dashboard"
+        hajimari.io/enable: "true"
+        external-dns/is-public: "true"
+        external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
       hosts:
         - "grafana.${SECRET_DOMAIN}"
       tls:
