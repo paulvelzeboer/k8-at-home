@@ -29,18 +29,16 @@ spec:
             slack_configs:
               - channel: "#prometheus"
                 icon_url: https://avatars3.githubusercontent.com/u/3380462
-                username: "Prometheus"
+                username: "prometheus"
                 send_resolved: true
                 title: |-
                   [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ if ne .CommonAnnotations.summary ""}}{{ .CommonAnnotations.summary }}{{ else }}{{ .CommonLabels.alertname }}{{ end }}
                 text: >-
                   {{ range .Alerts -}}
-                    **Alert:** {{ .Annotations.title }}{{ if .Labels.severity }} - '{{ .Labels.severity }}'{{ end }}
-
+                    **Alert:**  {{ .Annotations.title }}{{ if .Labels.severity }} - `{{ .Labels.severity }}`{{ end }}
                   **Description:** {{ if ne .Annotations.description ""}}{{ .Annotations.description }}{{else}}N/A{{ end }}
-
                   **Details:**
-                    {{ range .Labels.SortedPairs }} • *{{ .Name }}:* '{{ .Value }}'
+                    {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
                     {{ end }}
                   {{ end }}
         route:
@@ -123,18 +121,26 @@ spec:
       enabled: true
       endpoints:
         - 192.168.1.3
+        - 192.168.1.250
+        - 192.168.1.251
     kubeScheduler:
       enabled: true
       endpoints:
         - 192.168.1.3
+        - 192.168.1.250
+        - 192.168.1.251        
     kubeProxy:
       enabled: true
       endpoints:
         - 192.168.1.3
+        - 192.168.1.250
+        - 192.168.1.251
     kubeEtcd:
       enabled: true
       endpoints:
         - 192.168.1.3
+        - 192.168.1.250
+        - 192.168.1.251
       service:
         enabled: true
         port: 2381
