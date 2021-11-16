@@ -35,7 +35,7 @@ spec:
       customApps:
         - name: Dream machine  
           url: http://192.168.1.1
-          icon: test-tube
+          icon: cloud
       groups:
         - name: Tech
           links:

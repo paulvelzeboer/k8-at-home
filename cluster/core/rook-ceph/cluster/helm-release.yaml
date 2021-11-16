@@ -42,7 +42,7 @@ spec:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
           cert-manager.io/cluster-issuer: "letsencrypt-staging"
           hajimari.io/enable: "true"
-          hajimari.io/icon: "nas"
+          hajimari.io/icon: "server"
         host:
           name: "rook.${SECRET_DOMAIN}"
           path: "/"

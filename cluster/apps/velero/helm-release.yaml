@@ -60,7 +60,7 @@ spec:
     metrics:
       enabled: true
       serviceMonitor:
-        enabled: false
+        enabled: true
     backupsEnabled: true
     snapshotsEnabled: false
     upgradeCRDs: false
