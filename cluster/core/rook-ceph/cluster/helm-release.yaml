@@ -60,5 +60,8 @@ spec:
           - name: "server"
             devices:
               - name: "sdb"
+          - name: "k8s-1"
+            devices:
+              - name: "sda"
     cephFileSystems: []
     cephObjectStores: []
