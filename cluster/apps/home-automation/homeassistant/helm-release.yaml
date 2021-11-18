@@ -64,6 +64,14 @@ spec:
       post.hook.backup.velero.io/container: fsfreeze
       post.hook.backup.velero.io/command: '["/sbin/fsfreeze", "--unfreeze", "/config"]'
       secret.reloader.stakater.com/reload: "home-assistant"
+    postgresql:
+      existingSecret: home-assistant-postgresql-secret
+      enabled: true
+      persistence:
+        enabled: true
+        storageClass: "ceph-block"
+        accessMode: ReadWriteOnce
+        size: 10Gi
     addons:
       codeserver:
         enabled: true
