@@ -4,4 +4,5 @@ resources:
   - config-pvc.yaml
   - code-server.sops.yaml
   - home-assistant.sops.yaml
+  - home-assistant-postgres.sops.yaml
   - helm-release.yaml
