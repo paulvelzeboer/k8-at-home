@@ -39,8 +39,8 @@ spec:
       groups:
         - name: Tech
           links:
-            - name: Hacker News
-              url: "https://news.ycombinator.com/"
+            - name: Tweakers
+              url: "https://tweakers.net"
     ingress:
       main:
         enabled: true

@@ -76,9 +76,9 @@ spec:
         path: /data/frigate.db
 
       detectors:
-        coral:
-          type: edgetpu
-          device: usb
+       # coral:
+       #   type: edgetpu
+       #   device: usb
 
       # Global objects configuration
       objects:
