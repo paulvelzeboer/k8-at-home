@@ -161,11 +161,11 @@ spec:
             #       operator: In
             #       values:
             #         - "true"
-    resources:
-      requests:
-        gpu.intel.com/i915: 1
-        memory: 100Mi
-        cpu: 500m
-      limits:
-        gpu.intel.com/i915: 1
-        memory: 3000Mi
+    #resources:
+    #  requests:
+    #    gpu.intel.com/i915: 1
+    #    memory: 100Mi
+    #    cpu: 500m
+    #  limits:
+    #    gpu.intel.com/i915: 1
+    #    memory: 3000Mi
