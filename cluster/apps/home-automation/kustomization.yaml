@@ -4,4 +4,4 @@ resources:
   - frigate
   - homeassistant
   - emqx
-  - pvc
+
