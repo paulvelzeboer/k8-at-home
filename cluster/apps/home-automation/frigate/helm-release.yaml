@@ -75,7 +75,7 @@ spec:
       database:
         path: /data/frigate.db
 
-      detectors:
+      # detectors:
        # coral:
        #   type: edgetpu
        #   device: usb
@@ -114,7 +114,7 @@ spec:
             inputs:
               - path: rtsp://192.168.1.3:8554/camera-buiten-achter # <----- Update for your camera
                 roles:
-                #  - detect
+                  - detect
                   - rtmp
           detect:
             width: 1920 # <---- update for your camera's resolution
@@ -128,7 +128,7 @@ spec:
             inputs:
               - path: rtsp://192.168.1.3:8554/camera-buiten-voor # <----- Update for your camera
                 roles:
-                #  - detect
+                  - detect
                   - rtmp
           detect:
             width: 1920 # <---- update for your camera's resolution
