@@ -5,6 +5,7 @@ metadata:
   name: nfs-media
   namespace: home-automation
 spec:
+  storageClassName: nfs-media
   capacity:
     storage: 1Gi
   accessModes:
