@@ -5,6 +5,7 @@ metadata:
   name: nfs-media
 spec:
   storageClassName: nfs-media
+  capacity:
     storage: 1Gi
   accessModes:
     - ReadWriteMany
