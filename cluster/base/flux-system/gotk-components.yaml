@@ -1766,7 +1766,7 @@ spec:
                   attempt.
                 type: string
               lastAttemptedValuesChecksum:
-                description: LastAttemptedValuesChecksum is the SHA256 checksum of the
+                description: LastAttemptedValuesChecksum is the SHA1 checksum of the
                   values of the last reconciliation attempt.
                 type: string
               lastHandledReconcileAt:
@@ -2531,7 +2531,7 @@ spec:
                 description: The last successfully applied revision metadata.
                 properties:
                   checksum:
-                    description: The manifests SHA256 checksum.
+                    description: The manifests sha1 checksum.
                     type: string
                   entries:
                     description: A list of Kubernetes kinds grouped by namespace.
