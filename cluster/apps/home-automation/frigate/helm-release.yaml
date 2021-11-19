@@ -106,7 +106,6 @@ spec:
         hwaccel_args:
           - -hwaccel
           - -hwaccel_device
-          - /dev/dri/renderD128
           - -hwaccel_output_format
        # Specify camera's
       cameras:
