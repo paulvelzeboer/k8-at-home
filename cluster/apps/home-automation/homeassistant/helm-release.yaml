@@ -64,7 +64,7 @@ spec:
       config:
         enabled: true
         existingClaim: home-assistant-config
-        media:
+      media:
         enabled: true
         type: custom
         volumeSpec:
