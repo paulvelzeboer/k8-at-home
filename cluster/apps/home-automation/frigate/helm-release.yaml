@@ -147,15 +147,15 @@ spec:
       configmap.reloader.stakater.com/reload: "frigate-config"
     nodeSelector:
       node-role.kubernetes.io/worker: "true"
-    affinity:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-            - matchExpressions:
-                - key: feature.node.kubernetes.io/custom-coral-tpu
-                  operator: In
-                  values:
-                    - "true"
+   # affinity:
+   #   nodeAffinity:
+   #     requiredDuringSchedulingIgnoredDuringExecution:
+   #       nodeSelectorTerms:
+   #         - matchExpressions:
+   #             - key: feature.node.kubernetes.io/custom-coral-tpu
+   #               operator: In
+   #               values:
+   #                 - "true"
             # - matchExpressions:
             #     - key: feature.node.kubernetes.io/custom-intel-gpu
             #       operator: In
