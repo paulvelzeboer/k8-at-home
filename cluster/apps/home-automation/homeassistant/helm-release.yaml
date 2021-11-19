@@ -22,6 +22,8 @@ spec:
       tag: 2021.11.4
     env:
       TZ: "Europe/Amsterdam"
+      HASS_SECRET_MQTT_USERNAME: ${SECRET_MQTT_USERNAME}
+      HASS_SECRET_MQTT_PASSWORD: ${SECRET_MQTT_PASSWORD}      
     envFrom:
       - secretRef:
           name: home-assistant
