@@ -76,10 +76,10 @@ spec:
       database:
         path: /data/frigate.db
 
-      # detectors:
-       # coral:
-       #   type: edgetpu
-       #   device: usb
+      detectors:
+        coral:
+          type: edgetpu
+          device: usb
 
       # Global objects configuration
       objects:
@@ -103,11 +103,11 @@ spec:
             threshold: 0.5
 
       # Global ffmpeg configuration
-      #ffmpeg:
-      #  hwaccel_args:
-      #    - -hwaccel
-      #    - -hwaccel_device
-      #    - -hwaccel_output_format
+      ffmpeg:
+        hwaccel_args:
+          - -hwaccel
+          - -hwaccel_device
+          - -hwaccel_output_format
       # Specify camera's
 
       snapshots:
