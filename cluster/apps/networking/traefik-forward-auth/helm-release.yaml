@@ -1,0 +1,117 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: traefik-forward-auth
+  namespace: networking
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://k8s-at-home.com/charts/
+      chart: traefik-forward-auth
+      version: 1.0.10
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home-charts
+        namespace: flux-system
+      interval: 5m
+  values:
+    image:
+      repository: thomseddon/traefik-forward-auth
+      tag: "2.2"
+      pullPolicy: IfNotPresent
+    logging:
+      # logging.level -- [trace|debug|info|warn|error|fatal|panic] Log level (default: warn)
+      level: "debug"
+      # logging.format -- [text|json|pretty] Log format (default: text)
+      format: "pretty"
+    authHost: "oauth.${SECRET_DOMAIN}"
+    restrictions:
+      domain: "*"
+      whitelist: ${SECRET_CLOUDFLARE_EMAIL}
+    lifetime: 86400 # 1 day
+    cookie:
+      domain: ${SECRET_DOMAIN}
+      insecure: "false"
+    middleware:
+      enabled: true
+    providers:
+      google:
+        enabled: true
+        # clientId: ${SECRET_GOOGLE_AUTH_CLIENT_ID}
+        # clientSecret: ${SECRET_GOOGLE_AUTH_CLIENT_SECRET}
+    serviceAccount:
+      # Specifies whether a service account should be created
+      create: true
+
+    livenessProbe:
+      # livenessProbe.enabled -- Enable liveness probe
+      enabled: true
+      tcpSocket:
+        port: http
+      periodSeconds: 20
+    readinessProbe:
+      # readinessProbe.enabled -- Enable readiness probe
+      enabled: true
+      tcpSocket:
+        port: http
+      periodSeconds: 10
+    service:
+      type: ClusterIP
+      port: 4181
+      ## Provide any additional annotations which may be required. This can be used to
+      ## set the LoadBalancer service type to internal only.
+      ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
+      ##
+    ingress:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: traefik
+        cert-manager.io/cluster-issuer: "letsencrypt-staging"
+        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+        external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+        external-dns/is-public: "true"
+      hosts:
+        - host: oauth.${SECRET_DOMAIN}
+          paths:
+            path: /
+            #pathType: Prefix
+      tls:
+        - hosts:
+            - oauth.${SECRET_DOMAIN}
+          secretName: oauth-tls
+    resources:
+      requests:
+        memory: 32Mi
+        cpu: 50m
+      limits:
+        memory: 32Mi
+        cpu: 50m
+    autoscaling:
+      enabled: false
+      minReplicas: 1
+      maxReplicas: 100
+      targetCPUUtilizationPercentage: 80
+      # targetMemoryUtilizationPercentage: 80
+    env:
+      - name: PROVIDERS_GOOGLE_CLIENT_ID
+        valueFrom:
+          secretKeyRef:
+            name: traefik-forward-auth-secret
+            key: clientId
+      - name: PROVIDERS_GOOGLE_CLIENT_SECRET
+        valueFrom:
+          secretKeyRef:
+            name: traefik-forward-auth-secret
+            key: clientSecret
+      - name: SECRET
+        valueFrom:
+          secretKeyRef:
+            name: traefik-forward-auth-secret
+            key: secret
+      - name: WHITELIST
+        valueFrom:
+          secretKeyRef:
+            name: traefik-forward-auth-secret
+            key: whitelist
