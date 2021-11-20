@@ -90,10 +90,10 @@ spec:
         filters:
           person:
             max_area: 20000000
-            min_area: 4000
+            min_area: 5000
           bird:
             max_area: 5000
-            min_area: 100
+            min_area: 250
             min_score: 0.3
             threshold: 0.5
           cat:
