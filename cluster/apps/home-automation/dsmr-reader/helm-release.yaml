@@ -29,6 +29,12 @@ spec:
       DJANGO_DATABASE_PORT: "5432"
       DJANGO_DATABASE_NAME: dsmr-reader
 
+    service:
+      main:
+        type: LoadBalancer
+        loadBalancerIP: 192.168.1.234
+        externalTrafficPolicy: Local
+
     ingress:
       main:
         enabled: true
@@ -45,11 +51,12 @@ spec:
           - host: dsmr-reader.${SECRET_DOMAIN}
             paths:
               - path: /
+                pathType: Prefix
 
         tls:
-          - secretName: dsmr-reader-tls
-            hosts:
-              - dsmr-reader.${SECRET_DOMAIN}
+          - hosts:
+              - "dsmr-reader.${SECRET_DOMAIN}"
+            secretName: "dsmrreader-tls"
 
     resources:
       requests:
