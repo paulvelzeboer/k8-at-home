@@ -1,0 +1,120 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: dsmr-reader
+  namespace: home-automation
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://k8s-at-home.com/charts/
+      chart: dsmr-reader
+      version: 5.2.0
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home-charts
+        namespace: flux-system
+      interval: 5m
+  values:
+    image:
+      repository: xirixiz/dsmr-reader-docker
+      tag: latest-2021.10.02-amd64
+
+    env:
+      TZ: Europe/Amsterdam
+      DJANGO_TIME_ZONE: Europe/Amsterdam
+      DJANGO_DATABASE_USER: dsmr-reader
+      DJANGO_DATABASE_HOST: dsmr-reader-postgresql.home-automation
+      DJANGO_DATABASE_PORT: "5432"
+      DJANGO_DATABASE_NAME: dsmr-reader
+
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: "traefik"
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-staging
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          external-dns/is-public: "true"
+          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+          traefik.ingress.kubernetes.io/router.middlewares: networking-traefik-forward-auth@kubernetescrd
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "view-dashboard"
+
+        hosts:
+          - host: dsmr-reader.${SECRET_DOMAIN}
+            paths:
+              - path: /
+
+        tls:
+          - secretName: dsmr-reader-tls
+            hosts:
+              - dsmr-reader.${SECRET_DOMAIN}
+
+    resources:
+      requests:
+        memory: "128Mi"
+      limits:
+        memory: "512Mi"
+
+    postgresql:
+      enabled: true
+
+      image:
+        repository: bitnami/postgresql
+        tag: 13.5.0
+        pullPolicy: IfNotPresent
+
+      postgresqlUsername: dsmr-reader
+      # postgresqlPassword: set by valuesFrom
+      postgresqlDatabase: dsmr-reader
+
+      primary:
+        podAnnotations:
+          backup.velero.io/backup-volumes: data
+          pre.hook.backup.velero.io/container: fsfreeze
+          pre.hook.backup.velero.io/command: '["/sbin/fsfreeze", "--freeze", "/data"]'
+          post.hook.backup.velero.io/container: fsfreeze
+          post.hook.backup.velero.io/command: '["/sbin/fsfreeze", "--unfreeze", "/data"]'
+
+        sidecars:
+          - name: fsfreeze
+            image: ghcr.io/k8s-at-home/fsfreeze:v2.37-r0
+            volumeMounts:
+              - name: data
+                mountPath: /data
+            securityContext:
+              privileged: true
+
+      persistence:
+        enabled: true
+        existingClaim: dsmr-reader-postgresql
+
+      resources:
+        requests:
+          memory: 256Mi
+        limits:
+          memory: 512Mi
+
+  valuesFrom:
+    - kind: Secret
+      name: dsmr-reader
+      valuesKey: postgresql_password
+      targetPath: postgresql.postgresqlPassword
+      optional: false
+    - kind: Secret
+      name: dsmr-reader
+      valuesKey: postgresql_password
+      targetPath: env.DJANGO_DATABASE_PASSWORD
+      optional: false
+    - kind: Secret
+      name: dsmr-reader
+      valuesKey: dsmr_reader_admin_user
+      targetPath: env.DSMRREADER_ADMIN_USER
+      optional: false
+    - kind: Secret
+      name: dsmr-reader
+      valuesKey: dsmr_reader_admin_password
+      targetPath: env.DSMRREADER_ADMIN_PASSWORD
+      optional: false
