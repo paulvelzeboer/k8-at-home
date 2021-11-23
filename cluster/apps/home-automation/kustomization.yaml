@@ -4,5 +4,6 @@ resources:
   - emqx
   - dsmr-reader
   - frigate
+  - mosquitto
   - homeassistant
   - node-red
