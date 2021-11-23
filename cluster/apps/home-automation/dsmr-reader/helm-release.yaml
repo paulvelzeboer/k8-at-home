@@ -27,7 +27,7 @@ spec:
       DJANGO_DATABASE_USER: dsmr-reader
       DJANGO_DATABASE_HOST: dsmr-reader-postgresql.home-automation
       DJANGO_DATABASE_PORT: "5432"
-      DJANGO_DATABASE_NAME: dsmr-reader
+      DJANGO_DATABASE_NAME: dsmrreader
 
     service:
       main:
@@ -74,7 +74,7 @@ spec:
 
       postgresqlUsername: dsmr-reader
       # postgresqlPassword: set by valuesFrom
-      postgresqlDatabase: dsmr-reader
+      postgresqlDatabase: dsmrreader
 
       primary:
         podAnnotations:
