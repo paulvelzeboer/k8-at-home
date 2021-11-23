@@ -34,6 +34,7 @@ spec:
       main:
         type: LoadBalancer
         loadBalancerIP: 192.168.1.235
+        externalTrafficPolicy: Local
 
     auth:
       enabled: true
@@ -41,7 +42,7 @@ spec:
     persistence:
       data:
         enabled: true
-        existingClaim: mosquitto-data
+        existingClaim: mosquitto-config
       configinc:
         enabled: true
         type: custom
