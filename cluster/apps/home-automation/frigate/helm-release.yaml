@@ -153,18 +153,16 @@ spec:
           motion:
             mask:
               - 987,0,1448,87,1828,784,1920,717,1920,0
-       # camera_vogelplank: # <------ Name the camera
-       #   ffmpeg:
-       #     inputs:
-       #       - path: rtsp://${SECRET_CAMERA_USER}:${SECRET_CAMERA_PASSWORD}@192.168.1.102:554/udp/av0_0 # <----- Update for your camera
-       #         roles:
-       #           - detect
-       #     global_args: -hide_banner -loglevel debug  
-       #     input_args: -rtsp_transport tcp
-       #   detect:
-       #     width: 1280 # <---- update for your camera's resolution
-       #     height: 720  # <---- update for your camera's resolution
-       #     fps: 2
+        camera_vogelplank: # <------ Name the camera
+          ffmpeg:
+            inputs:
+              - path: rtsp://${SECRET_CAMERA_USER}:${SECRET_CAMERA_PASSWORD}@192.168.1.102:554/tcp/av0_0 # <----- Update for your camera
+                roles:
+                  - detect
+          detect:
+            width: 1280 # <---- update for your camera's resolution
+            height: 720  # <---- update for your camera's resolution
+            fps: 7
     podAnnotations:
       configmap.reloader.stakater.com/reload: "frigate-config"
     nodeSelector:
