@@ -163,12 +163,13 @@ spec:
               - path: rtsp://${SECRET_CAMERA_USER}:${SECRET_CAMERA_PASSWORD}@192.168.1.102:554/udp/av0_0 # <----- Update for your camera
                 roles:
                   - detect
+            global_args: -hide_banner -loglevel debug  
+            input_args: -rtsp_transport TCP
           detect:
             width: 1280 # <---- update for your camera's resolution
             height: 720  # <---- update for your camera's resolution
             fps: 2
-          global_args: -hide_banner -loglevel debug  
-          input_args: -rtsp_transport TCP
+
 
     podAnnotations:
       configmap.reloader.stakater.com/reload: "frigate-config"
