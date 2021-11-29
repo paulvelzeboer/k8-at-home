@@ -76,6 +76,14 @@ spec:
       database:
         path: /data/frigate.db
 
+      # Optional: logger verbosity settings
+      logger:
+        # Optional: Default log verbosity (default: shown below)
+        default: info
+        # Optional: Component specific logger overrides
+        logs:
+          frigate.event: debug
+
       detectors:
         coral:
           type: edgetpu
