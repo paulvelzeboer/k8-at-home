@@ -152,13 +152,13 @@ spec:
         camera_vogelplank: # <------ Name the camera
           ffmpeg:
             inputs:
-              - path: rtsp://${SECRET_CAMERA_USER}:${SECRET_CAMERA_PASSWORD}@192.168.1.102:554/udp/av0_0 # <----- Update for your camera
+              - path: rtsp://${SECRET_CAMERA_USER}:${SECRET_CAMERA_PASSWORD}@192.168.1.102:554/udp/av1_1 # <----- Update for your camera
                 roles:
                   - detect
                   - rtmp
           detect:
-            width: 1280 # <---- update for your camera's resolution
-            height: 720  # <---- update for your camera's resolution
+            width: 640 # <---- update for your camera's resolution
+            height: 360  # <---- update for your camera's resolution
             fps: 7
 
     podAnnotations:
