@@ -157,9 +157,9 @@ spec:
                   - detect
                   - rtmp
           detect:
-            width: 640 # <---- update for your camera's resolution
-            height: 360 # <---- update for your camera's resolution
-            fps: 15
+            width: 1280 # <---- update for your camera's resolution
+            height: 720  # <---- update for your camera's resolution
+            fps: 5
 
     podAnnotations:
       configmap.reloader.stakater.com/reload: "frigate-config"
