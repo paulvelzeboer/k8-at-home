@@ -155,7 +155,6 @@ spec:
               - path: rtsp://${SECRET_CAMERA_USER}:${SECRET_CAMERA_PASSWORD}@192.168.1.102:554/udp/av0_0 # <----- Update for your camera
                 roles:
                   - detect
-                  - rtmp
           detect:
             width: 1280 # <---- update for your camera's resolution
             height: 720  # <---- update for your camera's resolution
