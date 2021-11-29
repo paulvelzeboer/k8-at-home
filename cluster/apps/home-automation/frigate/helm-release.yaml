@@ -159,7 +159,6 @@ spec:
               - 987,0,1448,87,1828,784,1920,717,1920,0
         camera_vogelplank: # <------ Name the camera
           ffmpeg:
-            global_args: -hide_banner -loglevel debug
             inputs:
               - path: rtsp://${SECRET_CAMERA_USER}:${SECRET_CAMERA_PASSWORD}@192.168.1.102:554/udp/av0_0 # <----- Update for your camera
                 roles:
@@ -168,16 +167,10 @@ spec:
             width: 1280 # <---- update for your camera's resolution
             height: 720  # <---- update for your camera's resolution
             fps: 2
+          global_args: -hide_banner -loglevel debug  
+          input_args: -rtsp_transport TCP
 
     podAnnotations:
       configmap.reloader.stakater.com/reload: "frigate-config"
     nodeSelector:
       node-role.kubernetes.io/control-plane: "true"
-    #resources:
-    #  requests:
-    #    gpu.intel.com/i915: 1
-    #    memory: 100Mi
-    #    cpu: 500m
-    #  limits:
-    #    gpu.intel.com/i915: 1
-    #    memory: 3000Mi
