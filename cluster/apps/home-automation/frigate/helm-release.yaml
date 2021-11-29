@@ -109,17 +109,14 @@ spec:
             min_area: 400
             min_score: 0.3
             threshold: 0.5
-
-        # Global ffmpeg configuration
-        # ffmpeg:
-        #  hwaccel_args:
-        #    - -hwaccel
-        #    - vaapi
-        #    - -hwaccel_device
-        #    - /dev/dri/renderD128
-        #    - -hwaccel_output_format
-        #    - yuv420p
-
+      ffmpeg:
+        hwaccel_args:
+          - -hwaccel
+          - vaapi
+          - -hwaccel_device
+          - /dev/dri/renderD128
+          - -hwaccel_output_format
+          - yuv420p
       snapshots:
         # Optional: Enable writing jpg snapshot to /media/frigate/clips (default: shown below)
         # This value can be set via MQTT and will be updated in startup based on retained value
@@ -153,7 +150,6 @@ spec:
             width: 1920 # <---- update for your camera's resolution
             height: 1080 # <---- update for your camera's resolution
             fps: 20
-
           motion:
             mask:
               - 987,0,1448,87,1828,784,1920,717,1920,0
@@ -164,13 +160,11 @@ spec:
                 roles:
                   - detect
             global_args: -hide_banner -loglevel debug  
-            input_args: -rtsp_transport TCP
+            input_args: -rtsp_transport tcp
           detect:
             width: 1280 # <---- update for your camera's resolution
             height: 720  # <---- update for your camera's resolution
             fps: 2
-
-
     podAnnotations:
       configmap.reloader.stakater.com/reload: "frigate-config"
     nodeSelector:
