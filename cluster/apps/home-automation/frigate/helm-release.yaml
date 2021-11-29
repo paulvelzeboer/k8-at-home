@@ -110,15 +110,15 @@ spec:
             min_score: 0.3
             threshold: 0.5
 
-      # Global ffmpeg configuration
-      ffmpeg:
-        hwaccel_args:
-          - -hwaccel
-          - vaapi
-          - -hwaccel_device
-          - /dev/dri/renderD128
-          - -hwaccel_output_format
-          - yuv420p
+        # Global ffmpeg configuration
+        # ffmpeg:
+        #  hwaccel_args:
+        #    - -hwaccel
+        #    - vaapi
+        #    - -hwaccel_device
+        #    - /dev/dri/renderD128
+        #    - -hwaccel_output_format
+        #    - yuv420p
 
       snapshots:
         # Optional: Enable writing jpg snapshot to /media/frigate/clips (default: shown below)
@@ -173,20 +173,6 @@ spec:
       configmap.reloader.stakater.com/reload: "frigate-config"
     nodeSelector:
       node-role.kubernetes.io/control-plane: "true"
-   # affinity:
-   #   nodeAffinity:
-   #     requiredDuringSchedulingIgnoredDuringExecution:
-   #       nodeSelectorTerms:
-   #         - matchExpressions:
-   #             - key: feature.node.kubernetes.io/custom-coral-tpu
-   #               operator: In
-   #               values:
-   #                 - "true"
-            # - matchExpressions:
-            #     - key: feature.node.kubernetes.io/custom-intel-gpu
-            #       operator: In
-            #       values:
-            #         - "true"
     #resources:
     #  requests:
     #    gpu.intel.com/i915: 1
