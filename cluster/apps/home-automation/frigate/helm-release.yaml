@@ -77,12 +77,12 @@ spec:
         path: /data/frigate.db
 
       # Optional: logger verbosity settings
-      logger:
+      # logger:
         # Optional: Default log verbosity (default: shown below)
-        default: debug
+      #  default: debug
         # Optional: Component specific logger overrides
-        logs:
-          frigate.event: debug
+      #  logs:
+      #    frigate.event: debug
 
       detectors:
         coral:
@@ -101,7 +101,7 @@ spec:
             min_area: 5000
           bird:
             max_area: 5000
-            min_area: 250
+            min_area: 300
             min_score: 0.3
             threshold: 0.5
           cat:
