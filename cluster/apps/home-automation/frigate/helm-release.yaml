@@ -118,6 +118,11 @@ spec:
       #    - -hwaccel_output_format
       # Specify camera's
 
+      # Optional: ffmpeg configuration
+      ffmpeg:
+        # Optional: global ffmpeg args (default: shown below)
+        global_args: -hide_banner -loglevel debug
+
       snapshots:
         # Optional: Enable writing jpg snapshot to /media/frigate/clips (default: shown below)
         # This value can be set via MQTT and will be updated in startup based on retained value
