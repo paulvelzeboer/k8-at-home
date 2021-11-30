@@ -163,6 +163,12 @@ spec:
             width: 1280 # <---- update for your camera's resolution
             height: 720  # <---- update for your camera's resolution
             fps: 7
+          motion:
+            mask:
+              - 0,720,0,5,576,0,775,0,780,312,541,367,531,485,750,720
+          objects:
+            track:
+              - bird
     podAnnotations:
       configmap.reloader.stakater.com/reload: "frigate-config"
     nodeSelector:
