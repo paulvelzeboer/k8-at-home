@@ -109,7 +109,7 @@ spec:
             min_area: 400
             min_score: 0.3
             threshold: 0.5
-       ffmpeg:
+      ffmpeg:
         hwaccel_args:
           - -hwaccel
           - vaapi
