@@ -77,12 +77,12 @@ spec:
         path: /data/frigate.db
 
       # Optional: logger verbosity settings
-      # logger:
+      logger:
         # Optional: Default log verbosity (default: shown below)
-      #  default: debug
+        default: debug
         # Optional: Component specific logger overrides
-      #  logs:
-      #    frigate.event: debug
+        logs:
+          frigate.event: debug
 
       detectors:
         coral:
@@ -109,14 +109,14 @@ spec:
             min_area: 400
             min_score: 0.3
             threshold: 0.5
-       #ffmpeg:
-       # hwaccel_args:
-       #   - -hwaccel
-       #   - vaapi
-       #   - -hwaccel_device
-       #   - /dev/dri/renderD128
-       #   - -hwaccel_output_format
-       #   - yuv420p
+       ffmpeg:
+        hwaccel_args:
+          - -hwaccel
+          - vaapi
+          - -hwaccel_device
+          - /dev/dri/renderD128
+          - -hwaccel_output_format
+          - yuv420p
       snapshots:
         # Optional: Enable writing jpg snapshot to /media/frigate/clips (default: shown below)
         # This value can be set via MQTT and will be updated in startup based on retained value
