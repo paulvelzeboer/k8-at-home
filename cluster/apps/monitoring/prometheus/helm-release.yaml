@@ -118,33 +118,33 @@ spec:
               - node
             targetLabel: instance
     kubeApiServer:
-      enabled: true
+      enabled: false
     kubeControllerManager:
-      enabled: true
+      enabled: false
       endpoints:
         - 192.168.1.3
         - 192.168.1.250
         - 192.168.1.251
     kubeScheduler:
-      enabled: true
+      enabled: false
       endpoints:
         - 192.168.1.3
         - 192.168.1.250
         - 192.168.1.251        
     kubeProxy:
-      enabled: true
+      enabled: false
       endpoints:
         - 192.168.1.3
         - 192.168.1.250
         - 192.168.1.251
     kubeEtcd:
-      enabled: true
+      enabled: false
       endpoints:
         - 192.168.1.3
         - 192.168.1.250
         - 192.168.1.251
       service:
-        enabled: true
+        enabled: false
         port: 2381
         targetPort: 2381
     # Setting this option to 0 disabled CPU limits
@@ -196,21 +196,10 @@ spec:
             name: thanos-objstore
             key: objstore.yml
         additionalScrapeConfigs:
- #         - job_name: "coredns"
- #           honor_timestamps: true
- #           static_configs:
- #             - targets:
- #                 - "192.168.1.3:9153"
           - job_name: 'minio-job'
             honor_timestamps: true
             metrics_path: /minio/v2/metrics/cluster
             static_configs:
               - targets:
                   - "minio.home:9000"
- #         - job_name: "node-exporter"
- #           honor_timestamps: true
- #           static_configs:
- #             - targets:
- #                 - "${GATEWAY_ADDR}:9100"
- #                 - "${NAS_ADDR}:9100"
- #                 - "192.168.1.28:9100"
+
