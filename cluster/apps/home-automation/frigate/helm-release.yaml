@@ -109,13 +109,13 @@ spec:
             min_area: 400
             min_score: 0.3
             threshold: 0.5
-      ffmpeg:
-        hwaccel_args:
-          - -hwaccel
+      # ffmpeg:
+       # hwaccel_args:
+         # - -hwaccel
          # - vaapi
-          - -hwaccel_device
+         # - -hwaccel_device
          #  - /dev/dri/renderD128
-          - -hwaccel_output_format
+         # - -hwaccel_output_format
          # - yuv420p
       snapshots:
         # Optional: Enable writing jpg snapshot to /media/frigate/clips (default: shown below)
