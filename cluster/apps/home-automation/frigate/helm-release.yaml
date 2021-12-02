@@ -152,7 +152,7 @@ spec:
             fps: 20
           motion:
             mask:
-              - 1061,0,1341,129,1736,834,1920,717,1920,0
+              - 1061,0,1341,129,1640,886,1920,717,1920,0
         camera_vogelplank: # <------ Name the camera
           ffmpeg:
             inputs:
