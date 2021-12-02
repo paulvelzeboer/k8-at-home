@@ -21,7 +21,7 @@ spec:
       registry: public.ecr.aws
       repository: bitnami/thanos
     query:
-      enabled: true
+      enabled: false
       replicaLabels:
         - replica
       dnsDiscovery:
