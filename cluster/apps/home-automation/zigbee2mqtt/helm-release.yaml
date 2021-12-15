@@ -62,7 +62,6 @@ spec:
     # It's merely a guide for the initial start up on a fresh install
     # Everything after the first start is managed in the UI
     config:
-      homeassistant: true
       device_options:
         retain: true
       permit_join: false
