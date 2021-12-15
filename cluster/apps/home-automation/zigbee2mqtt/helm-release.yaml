@@ -57,7 +57,7 @@ spec:
       config:
         enabled: true
         existingClaim: zigbee2mqtt-config
-        mountPath: "/data"
+    #    mountPath: "/data"
     # These config values are not what is my current state of zigbee2mqtt
     # It's merely a guide for the initial start up on a fresh install
     # Everything after the first start is managed in the UI
