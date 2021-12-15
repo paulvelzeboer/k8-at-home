@@ -23,12 +23,12 @@ spec:
     image:
       repository: ghcr.io/koenkk/zigbee2mqtt
       tag: 1.22.1
-    podAnnotations:
-      backup.velero.io/backup-volumes: data
-      pre.hook.backup.velero.io/container: fsfreeze
-      pre.hook.backup.velero.io/command: '["/sbin/fsfreeze", "--freeze", "/data"]'
-      post.hook.backup.velero.io/container: fsfreeze
-      post.hook.backup.velero.io/command: '["/sbin/fsfreeze", "--unfreeze", "/data"]'
+#    podAnnotations:
+#      backup.velero.io/backup-volumes: data
+#      pre.hook.backup.velero.io/container: fsfreeze
+#      pre.hook.backup.velero.io/command: '["/sbin/fsfreeze", "--freeze", "/data"]'
+#      post.hook.backup.velero.io/container: fsfreeze
+#      post.hook.backup.velero.io/command: '["/sbin/fsfreeze", "--unfreeze", "/data"]'
     env:
       TZ: "Europe/Amsterdam"
       ZIGBEE2MQTT_DATA: /data
@@ -57,7 +57,7 @@ spec:
       config:
         enabled: true
         existingClaim: zigbee2mqtt-config
-    #    mountPath: "/data"
+        mountPath: "/data"
     # These config values are not what is my current state of zigbee2mqtt
     # It's merely a guide for the initial start up on a fresh install
     # Everything after the first start is managed in the UI
@@ -97,12 +97,13 @@ spec:
         port: 8080
       experimental:
         new_api: true
-    additionalContainers:
-      fsfreeze:
-        name: fsfreeze
-        image: ghcr.io/k8s-at-home/fsfreeze:v2.37-r0
-        volumeMounts:
-          - name: data
-            mountPath: /data
-        securityContext:
-          privileged: true
+
+#    additionalContainers:
+#      fsfreeze:
+#        name: fsfreeze
+#        image: ghcr.io/k8s-at-home/fsfreeze:v2.37-r0
+#        volumeMounts:
+#          - name: data
+#            mountPath: /data
+#        securityContext:
+#          privileged: true
