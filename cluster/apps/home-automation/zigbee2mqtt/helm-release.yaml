@@ -1,0 +1,111 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: zigbee2mqtt
+  namespace: home-automation
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://k8s-at-home.com/charts/
+      chart: zigbee2mqtt
+      version: 9.1.0
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home-charts
+        namespace: flux-system
+      interval: 5m
+  dependsOn:
+    - name: mosquitto
+      namespace: home-automation
+  values:
+    image:
+      repository: ghcr.io/koenkk/zigbee2mqtt
+      tag: 1.22.1
+    podAnnotations:
+      backup.velero.io/backup-volumes: data
+      pre.hook.backup.velero.io/container: fsfreeze
+      pre.hook.backup.velero.io/command: '["/sbin/fsfreeze", "--freeze", "/data"]'
+      post.hook.backup.velero.io/container: fsfreeze
+      post.hook.backup.velero.io/command: '["/sbin/fsfreeze", "--unfreeze", "/data"]'
+    env:
+      TZ: "Europe/Amsterdam"
+      ZIGBEE2MQTT_DATA: /data
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: "traefik"
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          traefik.ingress.kubernetes.io/router.middlewares: networking-traefik-forward-auth@kubernetescrd
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "cctv"
+          cert-manager.io/cluster-issuer: "letsencrypt-staging"
+          external-dns/is-public: "true"
+          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+
+        hosts:
+          - host: "zigbee2mqtt.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - "zigbee2mqtt.${SECRET_DOMAIN}"
+            secretName: "zigbee2mqtt-tls"
+    persistence:
+      config:
+        enabled: true
+        existingClaim: zigbee2mqtt-config
+        mountPath: "/data"
+    # These config values are not what is my current state of zigbee2mqtt
+    # It's merely a guide for the initial start up on a fresh install
+    # Everything after the first start is managed in the UI
+    config:
+      homeassistant: true
+      device_options:
+        retain: true
+      permit_join: false
+    config:
+      homeassistant: true
+      mqtt:
+        base_topic: zigbee2mqtt
+        server: "mqtt://mosquitto.home-automation"
+        user: "${SECRET_MQTT_USERNAME}"
+        password: "${SECRET_MQTT_PASSWORD}"
+ #     serial:
+ #       port: "tcp://192.168.1.235:6638"
+      advanced:
+        log_output:
+          - console
+        network_key:
+          - 204
+          - 61
+          - 75
+          - 23
+          - 44
+          - 230
+          - 24
+          - 203
+          - 53
+          - 5
+          - 248
+          - 32
+          - 50
+          - 84
+          - 44
+          - 159
+      frontend:
+        port: 8080
+      experimental:
+        new_api: true
+    additionalContainers:
+      fsfreeze:
+        name: fsfreeze
+        image: ghcr.io/k8s-at-home/fsfreeze:v2.37-r0
+        volumeMounts:
+          - name: data
+            mountPath: /data
+        securityContext:
+          privileged: true
