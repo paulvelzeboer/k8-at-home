@@ -74,14 +74,12 @@ spec:
         port: "/dev/ttyUSB0"
       mqtt:
         base_topic: zigbee2mqtt
-        server: "mqtt://mosquitto.home-automation"
+        server: "mqtt://192.168.1.235"
         user: "${SECRET_MQTT_USERNAME}"
         password: "${SECRET_MQTT_PASSWORD}"
       advanced:
-        log_output:
-          - console
-        log_level: 
-          - debug
+        log_level: debug
+        log_output: console
         network_key:
           - 204
           - 61
