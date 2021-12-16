@@ -76,6 +76,8 @@ spec:
       advanced:
         log_output:
           - console
+        log_level: 
+          - debug
         network_key:
           - 204
           - 61
