@@ -58,6 +58,10 @@ spec:
         enabled: true
         existingClaim: zigbee2mqtt-config
         mountPath: "/data"
+      usb:
+        enabled: true
+        type: hostPath
+        hostPath: /dev/ttyUSB0
     # These config values are not what is my current state of zigbee2mqtt
     # It's merely a guide for the initial start up on a fresh install
     # Everything after the first start is managed in the UI
@@ -67,7 +71,7 @@ spec:
       permit_join: false
       homeassistant: true
       serial:
-        port: "tcp://192.168.1.5:1003"
+        port: "/dev/ttyUSB0"
       mqtt:
         base_topic: zigbee2mqtt
         server: "mqtt://mosquitto.home-automation"
@@ -99,6 +103,8 @@ spec:
         port: 8080
       experimental:
         new_api: true
+    nodeSelector:
+      node-role.kubernetes.io/control-plane: "true"
 
 #    additionalContainers:
 #      fsfreeze:
