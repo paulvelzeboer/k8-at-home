@@ -62,7 +62,6 @@ spec:
         enabled: true
         type: hostPath
         hostPath: /dev/ttyUSB0
-        hostPathType: CharDevice
     # These config values are not what is my current state of zigbee2mqtt
     # It's merely a guide for the initial start up on a fresh install
     # Everything after the first start is managed in the UI
