@@ -61,7 +61,7 @@ spec:
       usb:
         enabled: true
         type: hostPath
-        hostPath: /dev/serial/by-id/usb-Silicon_Labs_slae.sh_cc2652rb_stick_-_slaesh_s_iot_stuff_00_12_4B_00_23_90_DC_0E-if00-port0
+        hostPath: /dev/ttyUSB0
     # These config values are not what is my current state of zigbee2mqtt
     # It's merely a guide for the initial start up on a fresh install
     # Everything after the first start is managed in the UI
@@ -71,7 +71,7 @@ spec:
       permit_join: false
       homeassistant: true
       serial:
-        port: "/dev/serial/by-id/usb-Silicon_Labs_slae.sh_cc2652rb_stick_-_slaesh_s_iot_stuff_00_12_4B_00_23_90_DC_0E-if00-port0"
+        port: "/dev/ttyUSB0"
       mqtt:
         base_topic: zigbee2mqtt
         server: "mqtt://192.168.1.3:1883"
