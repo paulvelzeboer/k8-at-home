@@ -79,7 +79,7 @@ spec:
         #password: "${SECRET_MQTT_PASSWORD}"
       advanced:
         log_level: debug
-        log_output: console
+        #log_output: console
         network_key:
           - 204
           - 61
