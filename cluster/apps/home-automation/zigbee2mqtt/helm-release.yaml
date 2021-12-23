@@ -71,32 +71,32 @@ spec:
       permit_join: false
       homeassistant: true
       serial:
-        port: "/dev/ttyUSB0"
+        port: "tcp://192.168.1.5:20108"
       mqtt:
         base_topic: zigbee2mqtt
-        server: "mqtt://192.168.1.3:1883"
-        #user: "${SECRET_MQTT_USERNAME}"
-        #password: "${SECRET_MQTT_PASSWORD}"
+        server: "mqtt://192.168.1.235"
+        user: "${SECRET_MQTT_USERNAME}"
+        password: "${SECRET_MQTT_PASSWORD}"
       advanced:
         log_level: debug
-        #log_output: console
-        network_key:
-          - 204
-          - 61
-          - 75
-          - 23
-          - 44
-          - 230
-          - 24
-          - 203
-          - 53
-          - 5
-          - 248
-          - 32
-          - 50
-          - 84
-          - 44
-          - 159
+        log_output: console
+       # network_key:
+       #   - 204
+       #   - 61
+       #   - 75
+       #   - 23
+       #   - 44
+       #   - 230
+       #   - 24
+       #   - 203
+       #   - 53
+       #   - 5
+       #   - 248
+       #   - 32
+       #   - 50
+       #   - 84
+       #   - 44
+       #   - 159
       frontend:
         port: 8080
       experimental:
