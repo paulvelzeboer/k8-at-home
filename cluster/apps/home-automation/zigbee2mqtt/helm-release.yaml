@@ -80,6 +80,7 @@ spec:
       advanced:
         log_output:
           - console
+          
        # network_key:
        #   - 204
        #   - 61
