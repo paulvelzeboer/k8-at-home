@@ -78,7 +78,8 @@ spec:
         user: "${SECRET_MQTT_USERNAME}"
         password: "${SECRET_MQTT_PASSWORD}"
       advanced:
-        log_output: console
+        log_output:
+          - console
        # network_key:
        #   - 204
        #   - 61
