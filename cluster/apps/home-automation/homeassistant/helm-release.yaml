@@ -82,6 +82,9 @@ spec:
     postgresql:
       existingSecret: home-assistant-postgresql-secret
       enabled: true
+      image:
+        repository: bitnami/postgresql
+        tag: 13.5.0
       persistence:
         enabled: true
         storageClass: "ceph-block"
