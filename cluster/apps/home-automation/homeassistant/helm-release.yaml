@@ -84,7 +84,7 @@ spec:
       enabled: true
       image:
         repository: bitnami/postgresql
-        tag: 13.5.0
+        tag: 11
       persistence:
         enabled: true
         storageClass: "ceph-block"
