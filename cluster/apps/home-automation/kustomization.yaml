@@ -4,7 +4,6 @@ resources:
   - dsmr-reader
   - frigate
   - mosquitto
-  - homeassistant
   - node-red
   - zigbee2mqtt
   
