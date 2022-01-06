@@ -84,9 +84,9 @@ spec:
       enabled: true
       image:
         repository: bitnami/postgresql
-        tag: 14
+        tag: 14.1.0
       persistence:
-        enabled: true
+        enabled: false
         storageClass: "ceph-block"
         accessMode: ReadWriteOnce
         size: 10Gi
