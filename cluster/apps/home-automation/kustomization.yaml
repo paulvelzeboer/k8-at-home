@@ -3,7 +3,6 @@ kind: Kustomization
 resources:
   - dsmr-reader
   - homeassistant
-  - frigate
   - mosquitto
   - node-red
   - zigbee2mqtt
