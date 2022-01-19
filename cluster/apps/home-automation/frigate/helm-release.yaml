@@ -94,7 +94,6 @@ spec:
         track:
           - person
           - bird
-          - cat
         filters:
           person:
             max_area: 20000000
