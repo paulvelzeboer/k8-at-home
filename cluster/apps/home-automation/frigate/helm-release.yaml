@@ -162,22 +162,22 @@ spec:
               - bird
               - cat
               - person
-        camera_vogelplank: # <------ Name the camera
-          ffmpeg:
-            inputs:
-              - path: rtsp://${SECRET_CAMERA_USER}:${SECRET_CAMERA_PASSWORD}@192.168.1.102:554/tcp/av0_0 # <----- Update for your camera
-                roles:
-                  - detect
-          detect:
-            width: 1280 # <---- update for your camera's resolution
-            height: 720  # <---- update for your camera's resolution
-            fps: 7
-          motion:
-            mask:
-              - 0,720,0,5,576,0,974,0,967,388,689,417,689,505,769,720
-          objects:
-            track:
-              - bird
+        #camera_vogelplank: # <------ Name the camera
+        #  ffmpeg:
+        #    inputs:
+        #      - path: rtsp://${SECRET_CAMERA_USER}:${SECRET_CAMERA_PASSWORD}@192.168.1.102:554/tcp/av0_0 # <----- Update for your camera
+        #        roles:
+        #          - detect
+        #  detect:
+        #    width: 1280 # <---- update for your camera's resolution
+        #    height: 720  # <---- update for your camera's resolution
+        #    fps: 7
+        #  motion:
+        #    mask:
+        #      - 0,720,0,5,576,0,974,0,967,388,689,417,689,505,769,720
+        #  objects:
+        #    track:
+        #      - bird
     podAnnotations:
       configmap.reloader.stakater.com/reload: "frigate-config"
     nodeSelector:
