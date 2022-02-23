@@ -178,6 +178,8 @@ spec:
         #  objects:
         #    track:
         #      - bird
+
+        
     podAnnotations:
       configmap.reloader.stakater.com/reload: "frigate-config"
     nodeSelector:
