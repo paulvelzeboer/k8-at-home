@@ -7,5 +7,3 @@ resources:
   - networking
   - monitoring
   - system-upgrade
-  - home-automation
-  - velero
