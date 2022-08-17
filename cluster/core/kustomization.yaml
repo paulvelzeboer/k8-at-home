@@ -6,3 +6,4 @@ resources:
   - kube-system
   - system-upgrade
   - rook-ceph
+  - metallb-system
