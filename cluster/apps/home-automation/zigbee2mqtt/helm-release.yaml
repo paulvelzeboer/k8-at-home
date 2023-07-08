@@ -22,7 +22,7 @@ spec:
   values:
     image:
       repository: ghcr.io/koenkk/zigbee2mqtt
-      tag: 1.27.0
+      tag: 1.32.1
 #    podAnnotations:
 #      backup.velero.io/backup-volumes: data
 #      pre.hook.backup.velero.io/container: fsfreeze
